@@ -10,13 +10,19 @@
     containerOf: {
       booksList: '.books-list',
     },
+    class: {
+      favoriteBooks: 'favorite',
+    },
+    book: {
+      bookImage: '',
+    },
   };
 
   const templates = {
     booksTemplate: Handlebars.compile(document.querySelector(select.templateOf.booksTemplate).innerHTML),
   };
 
-  function render(){
+  const render = function(){
     for (let books of dataSource.books){
       const generatedHTML = templates.booksTemplate(books);
       const element = utils.createDOMFromHTML(generatedHTML);
@@ -25,26 +31,28 @@
       //add element to list
       booksContainer.appendChild(element);
     }
-  }
+  };
   render();
 
   const favoriteBooks = [];
 
-  function initActions(){
+  const initActions = function(){
 
-    const booksContainer = document.querySelector(select.containerOf.booksList);
-    const booksImage = booksContainer.querySelectorAll('.book__image');
+    const booksContainer = document.querySelector(select.containerOf.booksList); //referencja do listy książek
 
-    for(let image of booksImage){
-      image.addEventListener('dblclick', function(event){
-        event.preventDefault();
-        image.classList.add('favorite');
-        const id = image.getAttribute('data-id');
-        favoriteBooks.push(id);
-      });
-    }
-  }
+    booksContainer.addEventListener('dblclick', function(event){ //nasłuchiwacz
+      event.preventDefault(); // zatrzymanie domyślnych
+      const bookCover = event.target.offsetParent; //najbliższy kliknięty
+      const id = bookCover.getAttribute('data-id'); // pobieranie atrybutu
+
+      if(!bookCover.classList.contains('favorite')){
+        favoriteBooks.push(id); //dodanie identyfikatora do favbooks
+        bookCover.classList.add('favorite');
+      }else{
+        favoriteBooks.splice(favoriteBooks.indexOf(id), 1); //usunięcie id z tablicy
+        bookCover.classList.remove('favorite');
+      }
+    });
+  };
   initActions();
 }
-
-
