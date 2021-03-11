@@ -19,10 +19,10 @@ figure {
   display: -ms-flexbox;
   display: flex;
   -ms-flex-wrap: wrap;
-      flex-wrap: wrap;
+  flex-wrap: wrap;
   -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
 }
 
 .book__image {
@@ -59,9 +59,9 @@ figure {
 
 .book__image.favorite {
   -webkit-box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
-          box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
   -webkit-transform: scale(1.1);
-          transform: scale(1.1);
+  transform: scale(1.1);
 }
 
 .book__image.favorite::after {
@@ -83,4 +83,3 @@ figure {
 .book__rating__fill {
   width: 100%;
 }
-/*# sourceMappingURL=style.css.map */
