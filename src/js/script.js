@@ -9,11 +9,11 @@
     },
     containerOf: {
       booksList: '.books-list',
-      filters: '.filters',
+      form: '.filters',
     },
     book: {
-      image: '.books-list',
-      favorite: '.favorite',
+      image: '.books-list .book__image' ,
+      favorite: '.books-list .favorite',
     },
   };
 
@@ -22,8 +22,9 @@
   };
 
   const booksContainer = document.querySelector(select.containerOf.booksList);
+  const filteredBooks = document.querySelector(select.containerOf.form);
   const favoriteBooks = [];
-  //const filters = [];
+  const filters = [];
 
   const render = function(){
     for (let books of dataSource.books){
@@ -55,23 +56,45 @@
       }
     });
   };
-  render();
-  initActions();
 
-
-
-  /*const filteredBooks = document.querySelector(select.containerOf.filters);
-
-  filteredBooks.addEventListener('click', function(event){
-    const clickedElement = event.target;
-    if(clickedElement.tagName === 'input' && clickedElement.type === 'chceckbox' && clickedElement.name === 'filter'){
-      console.log(clickedElement.value);
-      if(clickedElement.checked){
-        filters.push(clickedElement.value);
+  filteredBooks.addEventListener('change', function(event){
+    event.preventDefault();
+    const clickedElem = event.target;
+    if(clickedElem.type === 'checkbox'){
+      if(clickedElem.checked){
+        filters.push(clickedElem.value);
+        console.log(filters);
       }else{
-        const id = filters.indexOf(clickedElement.value);
-        filters.splice(filters.indexOf(id), 1);
+        const filterIndex = filters.indexOf(clickedElem.value);
+        filters.splice(filterIndex, 1);
+        console.log(filters);
       }
     }
-  });*/
+    filterBooks();
+  });
+
+
+  const filterBooks = function(){
+    for(let elem of dataSource.books){
+      let shouldBeHidden = false;
+      for (let filter of filters){
+        if(!elem.details[filter]){
+          shouldBeHidden = true;
+          break;
+        }
+      }
+      if(shouldBeHidden){
+        const bookCover = document.querySelector('.book__image[data-id="' + elem.id + '"]');
+        console.log('bookCover:', bookCover);
+        bookCover.classList.add('hidden');
+      }else{
+        const bookCover = document.querySelector('.book__image[data-id="' + elem.id + '"]');
+        bookCover.classList.remove('hidden');
+      }
+    }
+  };
+
+
+  render();
+  initActions();
 }
